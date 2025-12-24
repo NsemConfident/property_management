@@ -18,6 +18,19 @@ class PropertyManagementSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create Admin
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'System Administrator',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'phone' => '+2348012345677',
+                'address' => 'Lagos, Nigeria',
+                'email_verified_at' => now(),
+            ]
+        );
+
         // Create Owner
         $owner = User::firstOrCreate(
             ['email' => 'owner@example.com'],
@@ -236,6 +249,7 @@ class PropertyManagementSeeder extends Seeder
 
         $this->command->info('Property Management test data seeded successfully!');
         $this->command->info('Login credentials:');
+        $this->command->info('Admin: admin@example.com / password (Access Filament at /admin)');
         $this->command->info('Owner: owner@example.com / password');
         $this->command->info('Manager: manager@example.com / password');
         $this->command->info('Tenant 1: tenant1@example.com / password');

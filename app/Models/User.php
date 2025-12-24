@@ -78,6 +78,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
      * Get properties owned by this user
      */
     public function ownedProperties()

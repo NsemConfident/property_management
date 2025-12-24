@@ -15,6 +15,10 @@
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard*')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     
+                    @if(auth()->user()->isAdmin())
+                        <flux:navlist.item icon="cog-6-tooth" href="/admin" target="_blank">{{ __('Admin Panel') }}</flux:navlist.item>
+                    @endif
+                    
                     @if(auth()->user()->isOwner() || auth()->user()->isManager())
                         <flux:navlist.item icon="building-office" :href="route('properties.index')" :current="request()->routeIs('properties*')" wire:navigate>{{ __('Properties') }}</flux:navlist.item>
                         <flux:navlist.item icon="users" :href="route('tenants.index')" :current="request()->routeIs('tenants*')" wire:navigate>{{ __('Tenants') }}</flux:navlist.item>
