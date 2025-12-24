@@ -103,6 +103,11 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(['role:owner,manager'])
         ->name('tenants.edit');
 
+    // Reports Routes
+    Volt::route('reports', 'reports.index')
+        ->middleware(['role:owner,manager,admin'])
+        ->name('reports.index');
+
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');

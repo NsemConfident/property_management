@@ -36,11 +36,15 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
+                \App\Filament\Pages\Reports::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
+                \App\Filament\Widgets\RevenueStatsWidget::class,
+                \App\Filament\Widgets\RevenueChartWidget::class,
+                \App\Filament\Widgets\OccupancyStatsWidget::class,
+                \App\Filament\Widgets\OverdueInvoicesWidget::class,
                 AccountWidget::class,
-                FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
