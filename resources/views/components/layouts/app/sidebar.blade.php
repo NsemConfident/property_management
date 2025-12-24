@@ -13,7 +13,15 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard*')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    
+                    @if(auth()->user()->isOwner() || auth()->user()->isManager())
+                        <flux:navlist.item icon="building-office" :href="route('properties.index')" :current="request()->routeIs('properties*')" wire:navigate>{{ __('Properties') }}</flux:navlist.item>
+                        <flux:navlist.item icon="users" :href="route('tenants.index')" :current="request()->routeIs('tenants*')" wire:navigate>{{ __('Tenants') }}</flux:navlist.item>
+                    @endif
+                    
+                    <flux:navlist.item icon="document-text" :href="route('invoices.index')" :current="request()->routeIs('invoices*')" wire:navigate>{{ __('Invoices') }}</flux:navlist.item>
+                    <flux:navlist.item icon="banknotes" :href="route('payments.index')" :current="request()->routeIs('payments*')" wire:navigate>{{ __('Payments') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

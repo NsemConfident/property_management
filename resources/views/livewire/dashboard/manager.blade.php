@@ -1,6 +1,10 @@
 <?php
 
 use App\Models\Property;
+
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Property Manager Dashboard')]);
 use App\Models\Tenant;
 use App\Models\Invoice;
 use App\Models\Payment;
@@ -69,9 +73,7 @@ new class extends Component {
     }
 }; ?>
 
-<div>
-<x-layouts.app :title="__('Property Manager Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Stats Cards -->
         <div class="grid gap-4 md:grid-cols-4">
             <div class="rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-800">
@@ -173,5 +175,4 @@ new class extends Component {
             </div>
         </div>
     </div>
-</x-layouts.app>
 </div>

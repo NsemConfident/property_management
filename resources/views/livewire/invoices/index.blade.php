@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
 
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Invoices')]);
+
 new class extends Component {
     use WithPagination;
 
@@ -118,8 +122,7 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app :title="__('Invoices')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
@@ -240,5 +243,5 @@ new class extends Component {
             </div>
         </div>
     </div>
-</x-layouts.app>
+</div>
 

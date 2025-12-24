@@ -82,6 +82,27 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(['auth'])
         ->name('payments.create.invoice');
 
+    // Tenant Management Routes
+    Volt::route('tenants', 'tenants.index')
+        ->middleware(['role:owner,manager'])
+        ->name('tenants.index');
+    
+    Volt::route('tenants/create', 'tenants.create')
+        ->middleware(['role:owner,manager'])
+        ->name('tenants.create');
+    
+    Volt::route('tenants/create/{unit}', 'tenants.create')
+        ->middleware(['role:owner,manager'])
+        ->name('tenants.create.unit');
+    
+    Volt::route('tenants/{tenant}', 'tenants.show')
+        ->middleware(['auth'])
+        ->name('tenants.show');
+    
+    Volt::route('tenants/{tenant}/edit', 'tenants.edit')
+        ->middleware(['role:owner,manager'])
+        ->name('tenants.edit');
+
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');

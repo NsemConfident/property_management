@@ -5,6 +5,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Edit Property')]);
+
 new class extends Component {
     public Property $property;
     public string $name = '';
@@ -77,8 +81,7 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app :title="__('Edit Property')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Header -->
         <div>
             <flux:link href="{{ route('properties.index') }}" wire:navigate class="mb-4 inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
@@ -188,5 +191,5 @@ new class extends Component {
             </form>
         </div>
     </div>
-</x-layouts.app>
+</div>
 

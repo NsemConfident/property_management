@@ -5,6 +5,10 @@ use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Create Unit')]);
+
 new class extends Component {
     public $property_id;
     public Property $property;
@@ -86,8 +90,7 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app :title="__('Create Unit')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Header -->
         <div>
             @if(isset($property))
@@ -214,5 +217,5 @@ new class extends Component {
             </form>
         </div>
     </div>
-</x-layouts.app>
+</div>
 

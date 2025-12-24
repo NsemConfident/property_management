@@ -4,6 +4,10 @@ use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Invoice Details')]);
+
 new class extends Component {
     public Invoice $invoice;
 
@@ -40,8 +44,7 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app :title="__('Invoice Details')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
@@ -191,5 +194,5 @@ new class extends Component {
             </div>
         @endif
     </div>
-</x-layouts.app>
+</div>
 

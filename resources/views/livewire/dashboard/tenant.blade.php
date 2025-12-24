@@ -1,6 +1,10 @@
 <?php
 
 use App\Models\Tenant;
+
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Tenant Dashboard')]);
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
@@ -64,9 +68,7 @@ new class extends Component {
     }
 }; ?>
 
-<div>
-<x-layouts.app :title="__('Tenant Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         @if($tenant)
             <!-- Stats Cards -->
             <div class="grid gap-4 md:grid-cols-3">
@@ -190,5 +192,4 @@ new class extends Component {
             </div>
         @endif
     </div>
-</x-layouts.app>
 </div>

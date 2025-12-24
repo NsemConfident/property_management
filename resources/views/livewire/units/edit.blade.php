@@ -4,6 +4,10 @@ use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Edit Unit')]);
+
 new class extends Component {
     public Unit $unit;
     public string $unit_number = '';
@@ -76,8 +80,7 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app :title="__('Edit Unit')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Header -->
         <div>
             <flux:link href="{{ route('units.show', $unit) }}" wire:navigate class="mb-4 inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
@@ -182,5 +185,5 @@ new class extends Component {
             </form>
         </div>
     </div>
-</x-layouts.app>
+</div>
 

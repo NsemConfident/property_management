@@ -4,6 +4,10 @@ use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
+use function Livewire\Volt\layout;
+
+layout('components.layouts.app', ['title' => __('Unit Details')]);
+
 new class extends Component {
     public Unit $unit;
 
@@ -30,8 +34,7 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app :title="__('Unit Details')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6">
+<div class="flex h-full w-full flex-1 flex-col gap-6">
         <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
@@ -117,7 +120,15 @@ new class extends Component {
         <!-- Current Tenant -->
         @if($unit->currentTenant)
             <div class="rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-800">
-                <h2 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-neutral-100">Current Tenant</h2>
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Current Tenant</h2>
+                    @if(auth()->user()->isOwner() || auth()->user()->isManager())
+                        <flux:link href="{{ route('tenants.edit', $unit->currentTenant) }}" wire:navigate>
+                            <flux:icon.pencil class="size-4" />
+                            Edit Lease
+                        </flux:link>
+                    @endif
+                </div>
                 <dl class="space-y-3">
                     <div>
                         <dt class="text-sm font-medium text-neutral-600 dark:text-neutral-400">Name</dt>
@@ -151,9 +162,17 @@ new class extends Component {
             </div>
         @else
             <div class="rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-800">
-                <p class="text-center text-neutral-600 dark:text-neutral-400">No tenant assigned to this unit.</p>
+                <div class="flex flex-col items-center justify-center gap-4">
+                    <p class="text-center text-neutral-600 dark:text-neutral-400">No tenant assigned to this unit.</p>
+                    @if(auth()->user()->isOwner() || auth()->user()->isManager())
+                        <flux:link href="{{ route('tenants.create.unit', $unit) }}" variant="primary" wire:navigate>
+                            <flux:icon.plus class="size-4" />
+                            Assign Tenant
+                        </flux:link>
+                    @endif
+                </div>
             </div>
         @endif
     </div>
-</x-layouts.app>
+</div>
 
