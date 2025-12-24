@@ -6,7 +6,7 @@ use Livewire\Volt\Component;
 
 use function Livewire\Volt\layout;
 
-layout('components.layouts.app', ['title' => $property->name]);
+layout('components.layouts.app', ['title' => 'Property Details']);
 
 new class extends Component {
     public Property $property;

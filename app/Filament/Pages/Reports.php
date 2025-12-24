@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Services\ReportService;
+use Filament\Actions\Action;
 use Filament\Pages\Page;
 
 class Reports extends Page
@@ -82,6 +83,27 @@ class Reports extends Page
     public function getProperties()
     {
         return \App\Models\Property::all();
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('export_revenue_excel')
+                ->label('Export Revenue Report (Excel)')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
+                ->action(function () {
+                    return \Maatwebsite\Excel\Facades\Excel::download(
+                        new \App\Exports\RevenueReportExport([
+                            'start_date' => $this->startDate,
+                            'end_date' => $this->endDate,
+                            'property_id' => $this->propertyId,
+                        ]),
+                        'revenue-report-' . now()->format('Y-m-d') . '.xlsx'
+                    );
+                })
+                ->visible(fn () => $this->selectedReport === 'revenue'),
+        ];
     }
 }
 

@@ -124,4 +124,13 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+
+    // Invoice PDF Routes
+    Route::get('invoices/{invoice}/pdf', [\App\Http\Controllers\InvoicePdfController::class, 'download'])
+        ->middleware(['auth'])
+        ->name('invoices.pdf.download');
+    
+    Route::get('invoices/{invoice}/view-pdf', [\App\Http\Controllers\InvoicePdfController::class, 'view'])
+        ->middleware(['auth'])
+        ->name('invoices.pdf.view');
 });

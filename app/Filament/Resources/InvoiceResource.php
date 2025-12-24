@@ -122,6 +122,11 @@ class InvoiceResource extends Resource
                     ]),
             ])
             ->actions([
+                Actions\Action::make('download_pdf')
+                    ->label('Download PDF')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn (Invoice $record): string => route('invoices.pdf.download', $record))
+                    ->openUrlInNewTab(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])

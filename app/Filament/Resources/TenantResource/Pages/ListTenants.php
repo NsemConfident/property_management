@@ -14,6 +14,16 @@ class ListTenants extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make('export')
+                ->label('Export to Excel')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
+                ->action(function () {
+                    return \Maatwebsite\Excel\Facades\Excel::download(
+                        new \App\Exports\TenantsExport(),
+                        'tenants-' . now()->format('Y-m-d') . '.xlsx'
+                    );
+                }),
         ];
     }
 }
