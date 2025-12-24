@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Invoice;
 use App\Models\Tenant;
 use Carbon\Carbon;
+use App\Services\ReminderService;
 
 class InvoiceService
 {
@@ -50,6 +51,15 @@ class InvoiceService
             'description' => 'Monthly rent for ' . $month->format('F Y'),
             'line_items' => $lineItems,
         ]);
+
+        // Automatically create payment due reminder
+        try {
+            $reminderService = app(ReminderService::class);
+            $reminderService->createPaymentDueReminder($invoice, 3);
+        } catch (\Exception $e) {
+            // Log error but don't fail invoice creation
+            \Log::warning("Failed to create reminder for invoice {$invoice->id}: " . $e->getMessage());
+        }
 
         return $invoice;
     }
