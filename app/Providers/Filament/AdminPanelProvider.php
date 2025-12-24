@@ -42,8 +42,18 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 \App\Filament\Widgets\RevenueStatsWidget::class,
                 \App\Filament\Widgets\RevenueChartWidget::class,
+                \App\Filament\Widgets\PropertyPerformanceChartWidget::class,
+                \App\Filament\Widgets\MonthlyPaymentChartWidget::class,
+                \App\Filament\Widgets\PaymentMethodChartWidget::class,
                 \App\Filament\Widgets\OccupancyStatsWidget::class,
+                \App\Filament\Widgets\OccupancyChartWidget::class,
+                \App\Filament\Widgets\InvoiceStatusChartWidget::class,
                 \App\Filament\Widgets\OverdueInvoicesWidget::class,
+                \App\Filament\Widgets\RecentPaymentsTableWidget::class,
+                \App\Filament\Widgets\OverdueInvoicesTableWidget::class,
+                \App\Filament\Widgets\RecentInvoicesTableWidget::class,
+                \App\Filament\Widgets\PropertiesOverviewTableWidget::class,
+                \App\Filament\Widgets\ActiveTenantsTableWidget::class,
                 AccountWidget::class,
             ])
             ->middleware([
