@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Models\Invoice;
 use App\Models\Reminder;
+use App\Models\ReminderTemplate;
 use App\Models\Tenant;
 use App\Notifications\PaymentReminderNotification;
+use App\Services\TemplateService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -39,8 +41,20 @@ class ReminderService
         }
 
         $tenant = $invoice->tenant;
-        $subject = "Payment Reminder: Invoice {$invoice->invoice_number} Due Soon";
-        $message = $this->generatePaymentDueMessage($invoice, $daysBeforeDue);
+        
+        // Try to use template, fall back to default message
+        $template = ReminderTemplate::getActiveForType('payment_due', $daysBeforeDue);
+        $templateService = app(TemplateService::class);
+        
+        if ($template) {
+            $data = $templateService->getPaymentTemplateData($invoice);
+            $rendered = $templateService->renderTemplate($template, $data);
+            $subject = $rendered['subject'];
+            $message = $rendered['message'];
+        } else {
+            $subject = "Payment Reminder: Invoice {$invoice->invoice_number} Due Soon";
+            $message = $this->generatePaymentDueMessage($invoice, $daysBeforeDue);
+        }
 
         return Reminder::create([
             'tenant_id' => $tenant->id,
@@ -82,8 +96,20 @@ class ReminderService
 
         $tenant = $invoice->tenant;
         $daysOverdue = now()->diffInDays($invoice->due_date);
-        $subject = "URGENT: Overdue Payment - Invoice {$invoice->invoice_number}";
-        $message = $this->generateOverdueMessage($invoice, $daysOverdue);
+        
+        // Try to use template, fall back to default message
+        $template = ReminderTemplate::getActiveForType('payment_overdue');
+        $templateService = app(TemplateService::class);
+        
+        if ($template) {
+            $data = $templateService->getPaymentTemplateData($invoice);
+            $rendered = $templateService->renderTemplate($template, $data);
+            $subject = $rendered['subject'];
+            $message = $rendered['message'];
+        } else {
+            $subject = "URGENT: Overdue Payment - Invoice {$invoice->invoice_number}";
+            $message = $this->generateOverdueMessage($invoice, $daysOverdue);
+        }
 
         return Reminder::create([
             'tenant_id' => $tenant->id,
@@ -123,8 +149,19 @@ class ReminderService
             return $existingReminder;
         }
 
-        $subject = "Lease Expiry Reminder - {$tenant->unit->property->name}";
-        $message = $this->generateLeaseExpiryMessage($tenant, $daysBeforeExpiry);
+        // Try to use template, fall back to default message
+        $template = ReminderTemplate::getActiveForType('lease_expiry', $daysBeforeExpiry);
+        $templateService = app(TemplateService::class);
+        
+        if ($template) {
+            $data = $templateService->getLeaseTemplateData($tenant);
+            $rendered = $templateService->renderTemplate($template, $data);
+            $subject = $rendered['subject'];
+            $message = $rendered['message'];
+        } else {
+            $subject = "Lease Expiry Reminder - {$tenant->unit->property->name}";
+            $message = $this->generateLeaseExpiryMessage($tenant, $daysBeforeExpiry);
+        }
 
         return Reminder::create([
             'tenant_id' => $tenant->id,
