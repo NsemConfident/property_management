@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'address',
     ];
 
     /**
@@ -48,6 +51,54 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if user is a tenant
+     */
+    public function isTenant(): bool
+    {
+        return $this->role === 'tenant';
+    }
+
+    /**
+     * Check if user is a property owner
+     */
+    public function isOwner(): bool
+    {
+        return $this->role === 'owner';
+    }
+
+    /**
+     * Check if user is a property manager
+     */
+    public function isManager(): bool
+    {
+        return $this->role === 'manager';
+    }
+
+    /**
+     * Get properties owned by this user
+     */
+    public function ownedProperties()
+    {
+        return $this->hasMany(Property::class, 'owner_id');
+    }
+
+    /**
+     * Get properties managed by this user
+     */
+    public function managedProperties()
+    {
+        return $this->hasMany(Property::class, 'manager_id');
+    }
+
+    /**
+     * Get tenant record for this user
+     */
+    public function tenant()
+    {
+        return $this->hasOne(Tenant::class);
     }
 
     /**
