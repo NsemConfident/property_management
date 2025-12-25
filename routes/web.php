@@ -133,4 +133,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('invoices/{invoice}/view-pdf', [\App\Http\Controllers\InvoicePdfController::class, 'view'])
         ->middleware(['auth'])
         ->name('invoices.pdf.view');
+
+    // Payment Routes
+    Route::get('invoices/{invoice}/pay', [\App\Http\Controllers\PaymentController::class, 'initiatePayment'])
+        ->middleware(['auth'])
+        ->name('payment.initiate');
+    
+    Route::get('payment/callback', [\App\Http\Controllers\PaymentController::class, 'handleCallback'])
+        ->name('payment.callback');
+    
+    Route::post('payment/webhook', [\App\Http\Controllers\PaymentController::class, 'handleWebhook'])
+        ->name('payment.webhook');
 });

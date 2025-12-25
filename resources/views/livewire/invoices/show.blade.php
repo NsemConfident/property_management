@@ -56,6 +56,14 @@ new class extends Component {
                 <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{{ $invoice->description }}</p>
             </div>
             <div class="flex gap-2">
+                @if(!$invoice->isPaid() && auth()->user()->isTenant() && auth()->user()->tenant && auth()->user()->tenant->id === $invoice->tenant_id)
+                    <a href="{{ route('payment.initiate', $invoice) }}" class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                        Pay Now with Flutterwave
+                    </a>
+                @endif
                 <span class="rounded-full px-3 py-1 text-sm font-medium
                     {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : '' }}
                     {{ $invoice->status === 'sent' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : '' }}

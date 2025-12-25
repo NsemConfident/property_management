@@ -220,6 +220,14 @@ new class extends Component {
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center justify-end gap-2">
+                                        @if(auth()->user()->isTenant() && !$invoice->isPaid())
+                                            <a href="{{ route('payment.initiate', $invoice) }}" class="inline-flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                                <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                                </svg>
+                                                Pay Now
+                                            </a>
+                                        @endif
                                         <flux:link href="{{ route('invoices.show', $invoice) }}" wire:navigate>
                                             <flux:icon.eye class="size-4" />
                                         </flux:link>

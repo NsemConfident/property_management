@@ -160,5 +160,8 @@ class InvoiceService
             'status' => $newBalance <= 0 ? 'paid' : ($invoice->due_date < now() ? 'overdue' : 'sent'),
             'paid_at' => $newBalance <= 0 ? now() : null,
         ]);
+
+        // Note: Payment record creation is handled by PaymentController
+        // This method only updates the invoice balance and status
     }
 }

@@ -137,6 +137,7 @@ new class extends Component {
                                     <th class="px-4 py-2 text-left text-sm font-medium text-neutral-600 dark:text-neutral-400">Due Date</th>
                                     <th class="px-4 py-2 text-left text-sm font-medium text-neutral-600 dark:text-neutral-400">Amount</th>
                                     <th class="px-4 py-2 text-left text-sm font-medium text-neutral-600 dark:text-neutral-400">Status</th>
+                                    <th class="px-4 py-2 text-right text-sm font-medium text-neutral-600 dark:text-neutral-400">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -149,6 +150,66 @@ new class extends Component {
                                             <span class="rounded-full px-2 py-1 text-xs {{ $invoice->status === 'sent' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' }}">
                                                 {{ ucfirst($invoice->status) }}
                                             </span>
+                                        </td>
+                                        <td class="px-4 py-2 text-sm">
+                                            <div class="flex items-center justify-end gap-2">
+                                                @if(!$invoice->isPaid())
+                                                    <a href="{{ route('payment.initiate', $invoice) }}" class="inline-flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                                        <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                                        </svg>
+                                                        Pay Now
+                                                    </a>
+                                                @endif
+                                                <flux:link href="{{ route('invoices.show', $invoice) }}" wire:navigate>
+                                                    <flux:icon.eye class="size-4" />
+                                                </flux:link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Overdue Invoices -->
+            @if($overdueInvoices->count() > 0)
+                <div class="rounded-xl border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20">
+                    <h2 class="mb-4 text-xl font-semibold text-red-900 dark:text-red-100">⚠️ Overdue Invoices</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-red-200 dark:border-red-800">
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-red-800 dark:text-red-200">Invoice #</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-red-800 dark:text-red-200">Due Date</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-red-800 dark:text-red-200">Amount</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-red-800 dark:text-red-200">Balance</th>
+                                    <th class="px-4 py-2 text-right text-sm font-medium text-red-800 dark:text-red-200">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($overdueInvoices as $invoice)
+                                    <tr class="border-b border-red-100 dark:border-red-800">
+                                        <td class="px-4 py-2 text-sm font-medium text-red-900 dark:text-red-100">{{ $invoice->invoice_number }}</td>
+                                        <td class="px-4 py-2 text-sm text-red-700 dark:text-red-300">{{ $invoice->due_date->format('M d, Y') }}</td>
+                                        <td class="px-4 py-2 text-sm font-medium text-red-900 dark:text-red-100">₦{{ number_format($invoice->amount, 2) }}</td>
+                                        <td class="px-4 py-2 text-sm font-bold text-red-900 dark:text-red-100">₦{{ number_format($invoice->balance, 2) }}</td>
+                                        <td class="px-4 py-2 text-sm">
+                                            <div class="flex items-center justify-end gap-2">
+                                                @if(!$invoice->isPaid())
+                                                    <a href="{{ route('payment.initiate', $invoice) }}" class="inline-flex items-center gap-1 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                                        <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                                        </svg>
+                                                        Pay Now
+                                                    </a>
+                                                @endif
+                                                <flux:link href="{{ route('invoices.show', $invoice) }}" wire:navigate>
+                                                    <flux:icon.eye class="size-4" />
+                                                </flux:link>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
