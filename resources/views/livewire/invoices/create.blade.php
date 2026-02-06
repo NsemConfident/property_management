@@ -117,7 +117,7 @@ new class extends Component {
                 ->get();
         }
 
-        return collect();
+        return collect(); 
     }
 }; ?>
 
